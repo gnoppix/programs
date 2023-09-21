@@ -1,0 +1,43 @@
+Name: battlenet
+Description: The official Blizzard Battle.net launcher.
+Grade: Gold
+Arch: win64
+
+Dependencies:
+- msls31
+- riched20
+- arial32
+- arialb32
+- vcredist2019
+
+Parameters:
+  dxvk: true
+  sync: fsync
+  discrete_gpu: true
+  
+Executable:
+  name: Battle.net
+  icon: battlenet.png
+  file: Battle.net.exe
+  path: Program Files (x86)/Battle.net/Battle.net.exe
+  arguments: WINEDLLOVERRIDES="locationapi=d" %command%
+  
+Steps:
+- action: install_msi
+  file_name: Battle.net-Setup-enUS.exe
+  url: https://www.battle.net/download/getInstallerForGame?os=win&version=LIVE&gameProgram=BATTLENET_APP
+  file_checksum: False
+  monitoring:
+    - Battle.net-Setup-enUS.exe
+    - Battle.net-Setup.exe
+  
+- action: update_config
+  path: userdir/Documents/Overwatch/Settings/Settings_v0.ini
+  type: ini
+  upd_keys: 
+    WindowMode:
+      Render.13: "1"
+    Type:
+      MovieExport.1: "1"
+    UseHardware:
+      MovieExport.1: "0"
